@@ -1,8 +1,17 @@
+
+// import {BackPack} from 'Inventory/InventoryMain.js';
+
+// GET FULL SCREEN
+document.body.style.overflow = 'hidden';
+const displayWidth = window.innerWidth;
+const displayHeight = window.innerHeight;
+
+
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = 1024
-canvas.height = 576
+canvas.width = displayWidth
+canvas.height = displayHeight
 
 const scaledCanvas = {
   width: canvas.width / 4,
@@ -107,6 +116,20 @@ const player = new Player({
   },
 })
 
+let inventory = new BackPack();
+
+let store = new ItemStore();
+
+let sword = store.getItem("Sword of Valor"); // Shield of Aegis
+let shield = store.getItem("Shield of Aegis")
+inventory.addItem(sword)
+inventory.addItem(shield)
+// inventory.addItem('sword', 'This sword has the blessing of the wind');
+
+inventory.getItems();
+
+
+
 const keys = {
   d: {
     pressed: false,
@@ -179,10 +202,26 @@ function animate() {
     else player.switchSprite('FallLeft')
   }
 
+
+  // DRAW INVENTORY LOGIC
+  inventory.drawInventory(c, camera);
+
+
+
   c.restore()
 }
 
 animate()
+
+window.addEventListener('keydown', (event) => {
+  switch (event.key) {
+      // ... other cases ...
+
+      case 'i':
+          inventory.showInventory = !inventory.showInventory;
+          break;
+  }
+});
 
 window.addEventListener('keydown', (event) => {
   switch (event.key) {

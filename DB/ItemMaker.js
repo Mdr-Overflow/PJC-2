@@ -13,3 +13,10 @@ function generateItem(itemName, itemDurability, itemMaxDurability, additionalHea
 
     return item;
 }
+
+// Example usage:
+let swordOfValor = generateItem("Sword of Valor", 75, 100, 20, 1.5, 30, "Fire Damage");
+let shieldOfAegis = generateItem("Shield of Aegis", 50, 100, 50, 0, 70, "Damage Reflection");
+
+console.log(swordOfValor);
+console.log(shieldOfAegis);
