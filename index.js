@@ -71,11 +71,11 @@ const player = new Player({
   collisionBlocks,
   platformCollisionBlocks,
   imageSrc: './img/warrior/Idle.png',
-  frameRate: 8,
+  frameRate: 12,
   animations: {
     Idle: {
       imageSrc: './img/warrior/Idle.png',
-      frameRate: 8,
+      frameRate: 12,
       frameBuffer: 3,
     },
     Run: {
@@ -85,17 +85,17 @@ const player = new Player({
     },
     Jump: {
       imageSrc: './img/warrior/Jump.png',
-      frameRate: 2,
+      frameRate: 4,
       frameBuffer: 3,
     },
     Fall: {
       imageSrc: './img/warrior/Fall.png',
-      frameRate: 2,
+      frameRate: 4,
       frameBuffer: 3,
     },
     FallLeft: {
       imageSrc: './img/warrior/FallLeft.png',
-      frameRate: 2,
+      frameRate: 4,
       frameBuffer: 3,
     },
     RunLeft: {
@@ -105,12 +105,12 @@ const player = new Player({
     },
     IdleLeft: {
       imageSrc: './img/warrior/IdleLeft.png',
-      frameRate: 8,
+      frameRate: 12,
       frameBuffer: 3,
     },
     JumpLeft: {
       imageSrc: './img/warrior/JumpLeft.png',
-      frameRate: 2,
+      frameRate: 4,
       frameBuffer: 3,
     },
   },
