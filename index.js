@@ -71,47 +71,47 @@ const player = new Player({
   collisionBlocks,
   platformCollisionBlocks,
   imageSrc: './img/warrior/Idle.png',
-  frameRate: 12,
+  frameRate: 11,
   animations: {
     Idle: {
       imageSrc: './img/warrior/Idle.png',
-      frameRate: 12,
-      frameBuffer: 3,
+      frameRate: 11,
+      frameBuffer: 11,
     },
     Run: {
       imageSrc: './img/warrior/Run.png',
       frameRate: 8,
-      frameBuffer: 5,
+      frameBuffer: 10,
     },
     Jump: {
       imageSrc: './img/warrior/Jump.png',
       frameRate: 4,
-      frameBuffer: 3,
+      frameBuffer: 5,
     },
     Fall: {
       imageSrc: './img/warrior/Fall.png',
       frameRate: 4,
-      frameBuffer: 3,
+      frameBuffer: 5,
     },
     FallLeft: {
       imageSrc: './img/warrior/FallLeft.png',
       frameRate: 4,
-      frameBuffer: 3,
+      frameBuffer: 5,
     },
     RunLeft: {
       imageSrc: './img/warrior/RunLeft.png',
       frameRate: 8,
-      frameBuffer: 5,
+      frameBuffer: 10,
     },
     IdleLeft: {
       imageSrc: './img/warrior/IdleLeft.png',
-      frameRate: 12,
-      frameBuffer: 3,
+      frameRate: 11,
+      frameBuffer: 11,
     },
     JumpLeft: {
       imageSrc: './img/warrior/JumpLeft.png',
       frameRate: 4,
-      frameBuffer: 3,
+      frameBuffer: 5,
     },
   },
 })
@@ -179,12 +179,12 @@ function animate() {
   player.velocity.x = 0
   if (keys.d.pressed) {
     player.switchSprite('Run')
-    player.velocity.x = 2
+    player.velocity.x = 1.5
     player.lastDirection = 'right'
     player.shouldPanCameraToTheLeft({ canvas, camera })
   } else if (keys.a.pressed) {
     player.switchSprite('RunLeft')
-    player.velocity.x = -2
+    player.velocity.x = -1.5
     player.lastDirection = 'left'
     player.shouldPanCameraToTheRight({ canvas, camera })
   } else if (player.velocity.y === 0) {
@@ -213,6 +213,30 @@ function animate() {
 
 animate()
 
+// Add a method to perform the jump based on the charge time
+function performJump() {
+  let jumpStrength;
+
+
+  if (player.jumpChargeTime >= 0.5 && player.jumpChargeTime < 1 ) {
+    // Small jump
+    jumpStrength = -2;
+  } else if (player.jumpChargeTime >= 1 && player.jumpChargeTime < 1.5) {
+    // Medium jump
+    jumpStrength = -2 * 1.25;
+  } else if (player.jumpChargeTime >= 1.5) {
+    // Max jump
+    jumpStrength = -2 * 2;
+  }
+  else{
+
+    jumpStrength = 0;
+
+  }
+  player.velocity.y = jumpStrength;
+}
+
+
 window.addEventListener('keydown', (event) => {
   switch (event.key) {
       // ... other cases ...
@@ -232,7 +256,8 @@ window.addEventListener('keydown', (event) => {
       keys.a.pressed = true
       break
     case 'w':
-      player.velocity.y = -4
+      player.velocity.y = 0
+      player.isJumpCharging = true;
       break
   }
 })
@@ -245,5 +270,14 @@ window.addEventListener('keyup', (event) => {
     case 'a':
       keys.a.pressed = false
       break
+    case 'w':
+      player.isJumpCharging = false;
+      this.performJump();
+      player.jumpChargeTime = 0;
+      
+      break;
   }
 })
+
+
+ 

@@ -1,4 +1,10 @@
 'use strict';
+
+
+// TREBUIE REGANDIT 
+
+// PUS IN INDEX.JS , SCHIMBAT PT. MAIN MENU , PLAYER INVENTORY , FARA TABS , FARA ALERT BOX , FARA GOHUNT , OVERLAY ? , SCHIMBAT MAIN DISPLAY 
+
 //General Selectors
 const body = document.querySelector('body');
 const gameApp = document.querySelector('.game-display');

@@ -1,4 +1,7 @@
 'use strict';
+
+// CHANGE THIS 
+
 const Monster = (function () {
   const monsterFactory = function (type, emoji, attack, armor, loot, rarity) {
     const getLoot = function () {

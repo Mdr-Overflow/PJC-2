@@ -45,21 +45,21 @@ const CharacterFactory = function (character, password) {
   };
   const getActions = () => [..._actions];
 
-  //Character inventory
-  const _inventory = Array.from({ length: 9 }, () => null);
-  const _emptySlot = () => _inventory.findIndex(ele => ele === null);
-  const fullBag = () => !_inventory.some(ele => ele === null);
-  const addItem = function (item) {
-    const emptySpot = _emptySlot();
-    if (emptySpot === -1) return `Inventory is full!`;
-    _inventory[emptySpot] = item;
-  };
-  const removeItem = function (spot) {
-    if (!_inventory[spot]) return;
-    const item = _inventory[spot];
-    _inventory[spot] = null;
-    return item;
-  };
+  // //Character inventory
+  // const _inventory = Array.from({ length: 9 }, () => null);
+  // const _emptySlot = () => _inventory.findIndex(ele => ele === null);
+  // const fullBag = () => !_inventory.some(ele => ele === null);
+  // const addItem = function (item) {
+  //   const emptySpot = _emptySlot();
+  //   if (emptySpot === -1) return `Inventory is full!`;
+  //   _inventory[emptySpot] = item;
+  // };
+  // const removeItem = function (spot) {
+  //   if (!_inventory[spot]) return;
+  //   const item = _inventory[spot];
+  //   _inventory[spot] = null;
+  //   return item;
+  // };
   const buyItem = function (item) {
     if (item.value > getCoins()) {
       GameUtilities.makeAlert('Not enough coins');
@@ -91,7 +91,7 @@ const CharacterFactory = function (character, password) {
     );
   };
 
-  const getInventory = () => [..._inventory];
+  // const getInventory = () => [..._inventory];
 
   //Character equipment
   const _equipment = {
@@ -190,59 +190,62 @@ const CharacterFactory = function (character, password) {
     _hpCorrect();
   };
 
-  const monsterHunt = function (monster) {
-    if (getHP() === 1) {
-      GameUtilities.makeAlert('To low HP for hunt!');
-      return;
-    }
-    if (fullBag()) {
-      GameUtilities.makeAlert('Inventory fool, sell some item first!');
-      return;
-    }
-    if (getAttack() > monster.armor && getArmor() > monster.attack) {
-      //char wins
-      const loot = monster.getLoot();
-      makeAction(
-        `You killed ${monster.emoji}${monster.type} and looted ${loot.emoji}${loot.title}!`
-      );
-      addItem(loot);
-      return;
-    }
-    if (getAttack() >= monster.armor && getArmor() <= monster.attack) {
-      const dmg = monster.attack - getArmor();
-      _hitPoints = _hitPoints - dmg > 1 ? _hitPoints - dmg : 1;
-      if (getHP() > 1) {
-        const loot = monster.getLoot();
-        makeAction(
-          `You killed ${monster.emoji}${monster.type} and looted ${loot.emoji}${loot.title}!
-          You lost ${dmg} HP points in combat!`
-        );
-        addItem(loot);
-        return;
-      } else {
-        makeAction(
-          `${monster.emoji}${monster.type} defeated you!
-          You lost ${dmg} HP points in combat! Heal up and try again`
-        );
-        return;
-      }
-    }
-    if (getAttack() < monster.armor && getArmor() > monster.attack) {
-      //lose and lose hp no winner
-      const dmg = Math.trunc(getHP() / 2);
-      _hitPoints -= dmg;
-      makeAction(`After long battle against ${monster.emoji}${monster.type},
-      there monster fled battleground and you lost ${dmg} HP points!`);
-      return;
-    }
-    if (getAttack() < monster.armor && getArmor() < monster.attack) {
-      _hitPoints = 1;
-      makeAction(`You found ${monster.emoji}${monster.type} but you are to weak
-      to fight this monster, you escaped but took big hit! Rest up hero!`);
-      return;
-    }
-  };
+  // const monsterHunt = function (monster) {
+  //   if (getHP() === 1) {
+  //     GameUtilities.makeAlert('To low HP for hunt!');
+  //     return;
+  //   }
+  //   if (fullBag()) {
+  //     GameUtilities.makeAlert('Inventory fool, sell some item first!');
+  //     return;
+  //   }
+  //   if (getAttack() > monster.armor && getArmor() > monster.attack) {
+  //     //char wins
+  //     const loot = monster.getLoot();
+  //     makeAction(
+  //       `You killed ${monster.emoji}${monster.type} and looted ${loot.emoji}${loot.title}!`
+  //     );
+  //     addItem(loot);
+  //     return;
+  //   }
+  //   if (getAttack() >= monster.armor && getArmor() <= monster.attack) {
+  //     const dmg = monster.attack - getArmor();
+  //     _hitPoints = _hitPoints - dmg > 1 ? _hitPoints - dmg : 1;
+  //     if (getHP() > 1) {
+  //       const loot = monster.getLoot();
+  //       makeAction(
+  //         `You killed ${monster.emoji}${monster.type} and looted ${loot.emoji}${loot.title}!
+  //         You lost ${dmg} HP points in combat!`
+  //       );
+  //       addItem(loot);
+  //       return;
+  //     } else {
+  //       makeAction(
+  //         `${monster.emoji}${monster.type} defeated you!
+  //         You lost ${dmg} HP points in combat! Heal up and try again`
+  //       );
+  //       return;
+  //     }
+  //   }
+  //   if (getAttack() < monster.armor && getArmor() > monster.attack) {
+  //     //lose and lose hp no winner
+  //     const dmg = Math.trunc(getHP() / 2);
+  //     _hitPoints -= dmg;
+  //     makeAction(`After long battle against ${monster.emoji}${monster.type},
+  //     there monster fled battleground and you lost ${dmg} HP points!`);
+  //     return;
+  //   }
+  //   if (getAttack() < monster.armor && getArmor() < monster.attack) {
+  //     _hitPoints = 1;
+  //     makeAction(`You found ${monster.emoji}${monster.type} but you are to weak
+  //     to fight this monster, you escaped but took big hit! Rest up hero!`);
+  //     return;
+  //   }
+  // };
 
+
+
+  // TREBUIE ADAPTAT
   const init = () =>
     makeAction(`${getName()} is created. Welcome to the RPG-Inventory!`);
   addItem(Armory.shop.dagger);
@@ -262,7 +265,7 @@ const CharacterFactory = function (character, password) {
     getArmor,
     getCoins,
     addCoins,
-    sendCoins,
+    // sendCoins,
     //Actions
     makeAction,
     getActions,
@@ -284,25 +287,25 @@ const CharacterFactory = function (character, password) {
     monsterHunt,
   };
 };
-const stomp = CharacterFactory('Stomp', '111');
-stomp.addItem(Armory.shop.sword);
-stomp.addItem(Armory.shop.apple);
-stomp.addItem(Armory.special.trident);
-stomp.addGear('head', Armory.special.head3);
-stomp.addGear('body', Armory.special.body3);
-stomp.addGear('legs', Armory.special.legs3);
-stomp.addGear('rightArm', Armory.shop.sword);
-const draw = CharacterFactory('Draw', '222');
-draw.addItem(Armory.special.bow);
-draw.addItem(Armory.shop.cheese);
-draw.addItem(Armory.shop.meat);
-draw.addGear('body', Armory.shop.body2);
-draw.addGear('leftArm', Armory.shop.dagger);
-const slick = CharacterFactory('Slick', '333');
-slick.addItem(Armory.shop.head1);
-slick.addItem(Armory.shop.body1);
-slick.addItem(Armory.shop.legs1);
-slick.addItem(Armory.shop.sword);
-slick.addItem(Armory.shop.sword);
-slick.addItem(Armory.special.axe);
-const characters = [stomp, draw, slick];
+// const stomp = CharacterFactory('Stomp', '111');
+// stomp.addItem(Armory.shop.sword);
+// stomp.addItem(Armory.shop.apple);
+// stomp.addItem(Armory.special.trident);
+// stomp.addGear('head', Armory.special.head3);
+// stomp.addGear('body', Armory.special.body3);
+// stomp.addGear('legs', Armory.special.legs3);
+// stomp.addGear('rightArm', Armory.shop.sword);
+// const draw = CharacterFactory('Draw', '222');
+// draw.addItem(Armory.special.bow);
+// draw.addItem(Armory.shop.cheese);
+// draw.addItem(Armory.shop.meat);
+// draw.addGear('body', Armory.shop.body2);
+// draw.addGear('leftArm', Armory.shop.dagger);
+// const slick = CharacterFactory('Slick', '333');
+// slick.addItem(Armory.shop.head1);
+// slick.addItem(Armory.shop.body1);
+// slick.addItem(Armory.shop.legs1);
+// slick.addItem(Armory.shop.sword);
+// slick.addItem(Armory.shop.sword);
+// slick.addItem(Armory.special.axe);
+// const characters = [stomp, draw, slick];

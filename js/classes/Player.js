@@ -14,6 +14,7 @@ class Player extends Sprite {
       x: 0,
       y: 1,
     }
+    
 
     this.collisionBlocks = collisionBlocks
     this.platformCollisionBlocks = platformCollisionBlocks
@@ -22,7 +23,7 @@ class Player extends Sprite {
         x: this.position.x,
         y: this.position.y,
       },
-      width: 10,
+      width: 12,
       height: 10,
     }
 
@@ -44,6 +45,12 @@ class Player extends Sprite {
       width: 200,
       height: 80,
     }
+
+     // Add a property to track the jump charge time
+     this.jumpChargeTime = 0;
+     // Add a property to track if the jump key is currently being held down
+     this.isJumpCharging = false;
+
   }
 
   switchSprite(key) {
@@ -155,6 +162,9 @@ class Player extends Sprite {
     this.applyGravity()
     this.updateHitbox()
     this.checkForVerticalCollisions()
+    if (this.isJumpCharging) {
+      this.jumpChargeTime += 0.016; // Assuming 60 FPS, so each frame is about 0.016 seconds
+    }
   }
 
   updateHitbox() {
@@ -163,7 +173,7 @@ class Player extends Sprite {
         x: this.position.x + 35,
         y: this.position.y + 26,
       },
-      width: 22,
+      width: 1,
       height: 16,
     }
   }
