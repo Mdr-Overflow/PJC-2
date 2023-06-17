@@ -113,19 +113,19 @@ const GameUtilities = (function () {
     return `<button class="btn-character-option" data-option="remove">Remove</button>`;
   };
 
-  const monsterHtml = function (monster) {
-    return `
-    <div class="monster-info">
-      <p><span>${monster.emoji}</span><span>${monster.type}</span></p>
-      <p>🪓<span>10</span>🛡️<span>15</span></p>
-    </div>
-    <div class="monster-loot">
-      <p>Loot drop:</p>
-      ${getLootHtml(monster.loot)}
-    </div>
+  // const monsterHtml = function (monster) {
+  //   return `
+  //   <div class="monster-info">
+  //     <p><span>${monster.emoji}</span><span>${monster.type}</span></p>
+  //     <p>🪓<span>10</span>🛡️<span>15</span></p>
+  //   </div>
+  //   <div class="monster-loot">
+  //     <p>Loot drop:</p>
+  //     ${getLootHtml(monster.loot)}
+  //   </div>
     
-  `;
-  };
+  // `;
+  // };
 
   const getLootHtml = function (loot) {
     let html = '';
@@ -154,6 +154,8 @@ const GameUtilities = (function () {
     overlay.classList.add('hidden');
   };
 
+
+   // TREBUIE SCHIMBAT 
   return {
     copperToCoins,
     coinsToCopper,
