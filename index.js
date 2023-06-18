@@ -354,7 +354,7 @@ window.addEventListener('keydown', (event) => {
       // ... other cases ...
 
       case 'i':
-          inventory.showInventory = !inventory.showInventory;
+          inventory.showInventory();
           break;
   }
 });
@@ -395,6 +395,13 @@ window.addEventListener('keydown', (event) => {
       break;
   }
 });
+
+// Inventory icon click event
+document
+  .querySelector("#inventory-icon")
+  .addEventListener("click", (event) => {
+    inventory.showInventory();
+  });
 
 window.addEventListener('keyup', (event) => {
   switch (event.key) {
