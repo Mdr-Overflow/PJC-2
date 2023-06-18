@@ -17,7 +17,7 @@ class Player extends Sprite {
       y: 1,
     }
     
-
+    this.animationQueue = []
     this.collisionBlocks = collisionBlocks
     this.platformCollisionBlocks = platformCollisionBlocks
     this.hitbox = {
@@ -25,7 +25,7 @@ class Player extends Sprite {
         x: this.position.x,
         y: this.position.y,
       },
-      width: 12,
+      width: 10,
       height: 10,
     }
 
@@ -58,6 +58,7 @@ class Player extends Sprite {
       height: 80,
     }
 
+      
      // Add a property to track the jump charge time
      this.jumpChargeTime = 0;
      // Add a property to track if the jump key is currently being held down
@@ -68,58 +69,64 @@ class Player extends Sprite {
      this.jumpsPerformed = 0;
      this.MaxJumps = 1;
      this.lastKeyPressTime = 0;
-     this.dead = false
+     this.dead = false;
+     this.canMove = true;
+     this.lastAnimationEndTime = 0;
+     this.maxQueueSize = 3;
   }
 
   switchSprite(key) {
 
     // overriding all other animations for death anim
-    if (this.image === this.animations.Death.image) {
-      if (this.framesCurrent === this.animations.Death.framesMax - 1)
-        this.dead = true
-      return
-    }
+    // if (this.image === this.animations.Death.image) {
+    //   if (this.framesCurrent === this.animations.Death.frameRate - 1)
+    //     this.dead = true
+    //   return
+    // }
 
-    if (this.image === this.animations.DeathLeft.image) {
-      if (this.framesCurrent === this.animations.DeathLeft.framesMax - 1)
-        this.dead = true
-      return
-    }
+    // if (this.image === this.animations.DeathLeft.image) {
+    //   if (this.framesCurrent === this.animations.DeathLeft.frameRate - 1)
+    //     this.dead = true
+    //   return
+    // }
 
-    // overriding all other animations with the attack animation
-    if (
-      this.image === this.animations.Attack.image &&
-      this.framesCurrent < this.animations.Attack.framesMax - 1
-    )
-      return
+    // // overriding all other animations with the attack animation
+    // if (
+    //   this.image === this.animations.Attack.image &&
+    //   this.framesCurrent < this.animations.Attack.frameRate - 1
+    // )
+    //   return
 
-      if (
-        this.image === this.animations.AttackLeft.image &&
-        this.framesCurrent < this.animations.AttackLeft.framesMax - 1
-      )
-        return
+    //   if (
+    //     this.image === this.animations.AttackLeft.image &&
+    //     this.framesCurrent < this.animations.AttackLeft.frameRate - 1
+    //   )
+    //     return
 
-    // override when fighter gets hit
-    if (
-      this.image === this.animations.Hurt.image &&
-      this.framesCurrent < this.animations.Hurt.framesMax - 1
-    )
-      return
+    // // override when fighter gets hit
+    // if (
+    //   this.image === this.animations.Hurt.image &&
+    //   this.framesCurrent < this.animations.Hurt.frameRate - 1
+    // )
+    //   return
 
-      if (
-        this.image === this.animations.HurtLeft.image &&
-        this.framesCurrent < this.animations.HurtLeft.framesMax - 1
-      )
-        return
+    //   if (
+    //     this.image === this.animations.HurtLeft.image &&
+    //     this.framesCurrent < this.animations.HurtLeft.frameRate - 1
+    //   )
+    //     return 
 
     if (this.image === this.animations[key].image || !this.loaded) return
-
-    // this.currentFrame = 0                                     // HERE IT HAPPENS
+    if ( true === this.animations[key].loop ){
+            this.currentFrame = 0                      
+    }                // HERE IT HAPPENS
     this.image = this.animations[key].image
     this.frameBuffer = this.animations[key].frameBuffer
     this.frameRate = this.animations[key].frameRate
     this.health = 100; 
     this.damageTaken = 0; 
+
+
   }
 
   updateCamerabox() {

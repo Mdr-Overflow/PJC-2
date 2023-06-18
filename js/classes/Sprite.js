@@ -75,11 +75,11 @@ class Sprite {
     this.elapsedFrames++
     //this.currentFrame++
 
-    if (this.loop === false) {
-      this.currentFrame = 1
-      console.info("IN NO LOOP")
-      return;
-    } 
+    // if (this.loop === false) {
+    //   this.currentFrame = 1
+    //   console.info("IN NO LOOP")
+    //   return;
+    // } 
 
     // PROBLEM IS NOT BUFFER , IT WON'T ENTER SECOND IF FOR THE SECOND TIME FOR SOME REASON , 
     // PROBLEM IS NOT ANOTHER ANIM. OVERWRITTING IT 
