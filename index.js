@@ -118,12 +118,12 @@ const player = new Player({
     Charge: {
       imageSrc: './img/warrior/Charge.png',
       frameRate: 4,
-      frameBuffer: 1,
+      frameBuffer: 16,
     },
     ChargeLeft: {
       imageSrc: './img/warrior/ChargeLeft.png',
       frameRate: 4,
-      frameBuffer: 1,
+      frameBuffer: 16,
     },
       // ATTACK AND GET HURT ANIMATIONS
 
@@ -131,14 +131,14 @@ const player = new Player({
       Attack: {
         imageSrc: './img/warrior/Attack2.png',
         frameRate: 6,
-        frameBuffer: 1,
+        frameBuffer: 12,
         loop: false,
       },
 
       AttackLeft: {
         imageSrc: './img/warrior/AttackLeft.png',
         frameRate: 6,
-        frameBuffer: 1,
+        frameBuffer: 12,
         loop: false,
       },
       Hurt: {

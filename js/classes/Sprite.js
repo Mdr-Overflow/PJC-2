@@ -85,25 +85,25 @@ class Sprite {
     // PROBLEM IS NOT ANOTHER ANIM. OVERWRITTING IT 
     // SEEMS TO NOT BE ABLE TO KEEP CURRENT FRAME COUNTER
     // NOT A LOADING PROBLEM
-      console.info("UPDATED FRAMES")
-      console.info("CURRENT FRAME = " + this.currentFrame)
-      console.info("FRAME RATE = " +this.frameRate)
-      console.info("this.elapsedFrames % this.frameBuffer === " + this.elapsedFrames % this.frameBuffer)
-      console.info(this.image)
+      // console.info("UPDATED FRAMES")
+      // console.info("CURRENT FRAME = " + this.currentFrame)
+      // console.info("FRAME RATE = " +this.frameRate)
+      // console.info("this.elapsedFrames % this.frameBuffer === " + this.elapsedFrames % this.frameBuffer)
+      // console.info(this.image)
     if (this.elapsedFrames % this.frameBuffer === 0) {
       if (this.currentFrame < this.frameRate - 1)  {
       this.currentFrame++
-      console.info("CURRENT FRAME IN UPDATE = " + this.currentFrame)
-      console.info(this.elapsedFrames)
-      console.info(this.frameRate)
-      console.info("Buffer ="+  this.frameBuffer)
-      console.info(this.image)
+      // console.info("CURRENT FRAME IN UPDATE = " + this.currentFrame)
+      // console.info(this.elapsedFrames)
+      // console.info(this.frameRate)
+      // console.info("Buffer ="+  this.frameBuffer)
+      // console.info(this.image)
     }
       else{
-        console.info("CURRENT FRAME IN SET 0 = " + this.currentFrame)
+        // console.info("CURRENT FRAME IN SET 0 = " + this.currentFrame)
         this.currentFrame = 0
       
-        console.info("SET FRAMES TO 0")
+        // console.info("SET FRAMES TO 0")
         
       }
     }
