@@ -50,7 +50,12 @@ class Player extends Sprite {
      this.jumpChargeTime = 0;
      // Add a property to track if the jump key is currently being held down
      this.isJumpCharging = false;
-
+     this.runAnimationEndTime = 0;
+     this.wPressTime = 0;
+     this.fallEndTime = 0;
+     this.jumpsPerformed = 0;
+     this.MaxJumps = 1;
+     this.lastKeyPressTime = 0;
   }
 
   switchSprite(key) {
@@ -164,6 +169,7 @@ class Player extends Sprite {
     this.checkForVerticalCollisions()
     if (this.isJumpCharging) {
       this.jumpChargeTime += 0.016; // Assuming 60 FPS, so each frame is about 0.016 seconds
+      console.log(this.jumpChargeTime)
     }
   }
 

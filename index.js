@@ -66,6 +66,7 @@ const player = new Player({
     x: 100,
     y: 300,
   },
+  
   collisionBlocks,
   platformCollisionBlocks,
   imageSrc: "./img/warrior/Idle.png",
@@ -111,8 +112,29 @@ const player = new Player({
       frameRate: 4,
       frameBuffer: 5,
     },
+
+    Charge: {
+      imageSrc: './img/warrior/Charge.png',
+      frameRate: 4,
+      frameBuffer: 1,
+    },
+    ChargeLeft: {
+      imageSrc: './img/warrior/ChargeLeft.png',
+      frameRate: 4,
+      frameBuffer: 1,
+    }
+      // CHARGE FURTHER , ATTACK AND GET HURT ANIMATIONS
   },
+
 });
+
+  wPressTime : 0,
+  fallEndTime : 0,
+  MaxJumps : 1,
+  jumpsPerformed : 0 ,
+  lastKeyPressTime : 0
+})
+
 
 let inventory = new BackPack();
 
@@ -132,7 +154,15 @@ const keys = {
   a: {
     pressed: false,
   },
+
 };
+
+  w: {
+    pressed: false,
+  }
+
+}
+
 
 const background = new Sprite({
   position: {
@@ -171,6 +201,7 @@ function animate() {
   player.checkForHorizontalCanvasCollision();
   player.update();
 
+
   player.velocity.x = 0;
   if (keys.d.pressed) {
     player.switchSprite("Run");
@@ -197,6 +228,67 @@ function animate() {
     else player.switchSprite("FallLeft");
   }
 
+
+  player.velocity.x = 0
+  // Handle horizontal movement and animations
+  if (keys.d.pressed) {
+    player.switchSprite('Run');
+    player.velocity.x = 1.5;
+    player.lastDirection = 'right';
+    player.shouldPanCameraToTheLeft({ canvas, camera });
+  } else if (keys.a.pressed) {
+    player.switchSprite('RunLeft');
+    player.velocity.x = -1.5;
+    player.lastDirection = 'left';
+    player.shouldPanCameraToTheRight({ canvas, camera });
+  } else {
+    player.velocity.x = 0;
+    if (player.lastDirection === 'right') {
+      player.switchSprite('Idle');
+    } else {
+      player.switchSprite('IdleLeft');
+    }
+  }
+
+  // Handle vertical movement and animations
+  if (keys.w.pressed && player.isJumpCharging) {
+    if (player.lastDirection === 'right') {
+      player.switchSprite('Charge');
+    } else {
+      player.switchSprite('ChargeLeft');
+    }
+  } else if (player.velocity.y < 0) {
+    player.shouldPanCameraDown({ canvas, camera });
+    if (player.lastDirection === 'right') {
+      player.switchSprite('Jump');
+    } else {
+      player.switchSprite('JumpLeft');
+    }
+  } else if (player.velocity.y > 0) {
+    player.shouldPanCameraUp({ canvas, camera });
+    if (player.lastDirection === 'right') {
+      player.switchSprite('Fall');
+    } else {
+      player.switchSprite('FallLeft');
+    }
+  }
+
+    // If the fall animation has just ended, record the time
+    if (this.currentAnimation !== 'Fall' && this.previousAnimation === 'Fall') {
+      player.fallEndTime = Date.now();
+      
+    }
+  
+    if (player.velocity.y == 0) 
+     player.jumpsPerformed = 0;  
+
+  if (player.velocity.y < 0) {
+    player.shouldPanCameraDown({ canvas, camera })}
+    if (player.velocity.y > 0) {
+      player.shouldPanCameraUp({ canvas, camera });
+    }
+// 
+
   // DRAW INVENTORY LOGIC
   inventory.drawInventory(c, camera);
 
@@ -209,16 +301,32 @@ animate();
 function performJump() {
   let jumpStrength;
 
+
   if (player.jumpChargeTime >= 0.5 && player.jumpChargeTime < 1) {
+
+  player.wPressTime = 0;
+
+  if (player.jumpChargeTime >= 0 && player.jumpChargeTime < 0.5 ) {
+
     // Small jump
-    jumpStrength = -2;
-  } else if (player.jumpChargeTime >= 1 && player.jumpChargeTime < 1.5) {
+    jumpStrength = -3 ;
+    player.jumpChargeTime = 0;
+
+  } else if (player.jumpChargeTime >= 0.5 && player.jumpChargeTime < 1.0) {
     // Medium jump
-    jumpStrength = -2 * 1.25;
+    jumpStrength = -3 * 1.25;
+    player.jumpChargeTime = 0;
   } else if (player.jumpChargeTime >= 1.5) {
     // Max jump
+
     jumpStrength = -2 * 2;
   } else {
+
+    jumpStrength = -3 * 1.5;
+    player.jumpChargeTime = 0;
+  }
+  else{
+
     jumpStrength = 0;
   }
   player.velocity.y = jumpStrength;
@@ -234,6 +342,7 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":
@@ -245,6 +354,41 @@ window.addEventListener("keydown", (event) => {
     case "w":
       player.velocity.y = 0;
       player.isJumpCharging = true;
+
+
+
+window.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case 'd':
+      // Only allow running if player is not charging and not in the fall animation
+      if (!player.isJumpCharging && player.currentAnimation !== 'Fall') {
+        keys.d.pressed = true;
+      }
+      break;
+    case 'a':
+      // Only allow running if player is not charging and not in the fall animation
+      if (!player.isJumpCharging && player.currentAnimation !== 'Fall') {
+        keys.a.pressed = true;
+      }
+      break;
+    case 'w':
+      // Only allow jump if player is not falling, not running, not in the fall animation, and has not reached the maximum number of jumps
+      // Also, only allow jump if 0.1 seconds have passed since the last keypress
+      if (player.velocity.y <= 0 && !(keys.d.pressed || keys.a.pressed) && player.currentAnimation !== 'Fall' && player.jumpsPerformed < player.MaxJumps && Date.now() - player.lastKeyPressTime >= 100) {
+        keys.w.pressed = true; 
+        player.velocity.y = 0;
+        player.isJumpCharging = true;
+        player.wPressTime = Date.now(); // Record the time when 'w' is pressed
+        player.jumpsPerformed++;
+        player.lastKeyPressTime = Date.now(); // Record the time of the last keypress
+      } else if (player.velocity.y <= 0 && (keys.d.pressed || keys.a.pressed) && player.jumpsPerformed < player.MaxJumps && Date.now() - player.lastKeyPressTime >= 100) {
+        // If player is running and 'w' is pressed, perform normal jump
+        keys.w.pressed = true; 
+        player.velocity.y = -3; // Normal jump strength
+        player.jumpsPerformed++;
+        player.lastKeyPressTime = Date.now(); // Record the time of the last keypress
+      }
+
       break;
   }
 });
@@ -259,6 +403,7 @@ window.addEventListener("keyup", (event) => {
       break;
     case "w":
       player.isJumpCharging = false;
+
       this.performJump();
       player.jumpChargeTime = 0;
 
@@ -271,3 +416,28 @@ document
   .addEventListener("click", (event) => {
     inventory.showInventory();
   });
+
+      let elapsedTime = player.wPressTime - Date.now()  // Calculate the time elapsed since 'w' was pressed
+     // console.log(player.wPressTime)
+      console.log(elapsedTime)
+      if (elapsedTime >= -500) {
+        // If 'w' was held down for 0.5 seconds or more, perform a charged jump
+       
+        performJump();
+        player.jumpsPerformed++; // Increment the number of jumps performed
+      } else {
+        // If 'w' was held down for less than 0.5 seconds, perform a normal jump
+        // But only if 0.3 seconds have passed since the fall animation ended and the player has not reached the maximum number of jumps
+        if (Date.now() - player.fallEndTime >= 150 && player.jumpsPerformed < player.MaxJumps) {
+          player.velocity.y = -3; // Normal jump strength
+          player.jumpsPerformed++; // Increment the number of jumps performed
+          player.jumpChargeTime = 0;
+          player.wPressTime = 0;
+        }
+
+        player.jumpChargeTime = 0;
+      }
+      break;
+  }
+});
+
