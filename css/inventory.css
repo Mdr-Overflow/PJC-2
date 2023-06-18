@@ -8,7 +8,9 @@
   width: 70%;
 
   background-color: hsl(var(--inv-color) / 80%);
-  border: 0.5rem hsl(var(--inv-color)) solid;
+  /* border: 0.33rem hsl(var(--inv-color)) solid; */
+  border: 0.4rem hsl(0, 15%, 30%) solid;
+  border-radius: 10px;
 
   
   display: grid;
@@ -62,6 +64,7 @@
 
 .item-emoji {
   grid-area: emoji;
+  text-align: center;
   font-size: 3em;
 }
 
