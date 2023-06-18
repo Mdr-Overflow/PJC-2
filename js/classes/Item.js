@@ -1,5 +1,5 @@
 class Item {
-    constructor(itemName, itemDescription, itemDurability, itemMaxDurability, additionalHealth, jumpIncrease, pushResistance, special, sprite, emoji) {
+    constructor(itemName, itemDescription, itemDurability, itemMaxDurability, additionalHealth, jumpIncrease, pushResistance, special, sprite) {
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.itemDurability = itemDurability;
@@ -15,7 +15,6 @@ class Item {
             imageSrc: "./img/itemExample.png",
             boxSize: sprite.boxSize
         });
-        this.emoji = emoji;
     }
 }
 
@@ -25,17 +24,15 @@ function ItemGenerator() {
         if (i % 2 === 0) {
             items.push(
                 new Item(
-                    "Sword of Valor", // name
-                    "A legendary sword that shines with a valorous light.", // description
-                    75, // durability
-                    100, // maxDurability
-                    20, // additionalHealth 
-                    1.5, // jumpIncrease
-                    30, // pushResistance
-                    "Fire Damage", // special
-                    "./img/itemExample.png", // sprite
-                    '🗡️' // emoji
-
+                    "Sword of Valor",
+                    "A legendary sword that shines with a valorous light.",
+                    75,
+                    100,
+                    20,
+                    1.5,
+                    30,
+                    "Fire Damage",
+                    "./img/itemExample.png"
                 )
             );
         } else {
@@ -49,8 +46,7 @@ function ItemGenerator() {
                     0,
                     70,
                     "Damage Reflection",
-                    "./img/itemExample.png",
-                    '🔰'
+                    "./img/itemExample.png"
                 )
             );
         }
