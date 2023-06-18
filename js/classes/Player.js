@@ -65,6 +65,8 @@ class Player extends Sprite {
     this.image = this.animations[key].image
     this.frameBuffer = this.animations[key].frameBuffer
     this.frameRate = this.animations[key].frameRate
+    this.health = 100; 
+    this.damageTaken = 0; 
   }
 
   updateCamerabox() {

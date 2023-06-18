@@ -124,8 +124,42 @@ const player = new Player({
       imageSrc: './img/warrior/ChargeLeft.png',
       frameRate: 4,
       frameBuffer: 1,
-    }
-      // CHARGE FURTHER , ATTACK AND GET HURT ANIMATIONS
+    },
+      // ATTACK AND GET HURT ANIMATIONS
+
+
+      Attack: {
+        imageSrc: './img/warrior/Attack.png',
+        frameRate: 6,
+        frameBuffer: 111,
+      },
+
+      AttackLeft: {
+        imageSrc: './img/warrior/AttackLeft.png',
+        frameRate: 6,
+        frameBuffer: 111,
+      },
+      Hurt: {
+        imageSrc: './img/warrior/Hurt.png',
+        frameRate: 4,
+        frameBuffer: 8,
+      },
+      HurtLeft: {
+        imageSrc: './img/warrior/HurtLeft.png',
+        frameRate: 4,
+        frameBuffer: 8,
+      },
+      Death: {
+        imageSrc: './img/warrior/Death.png',
+        frameRate: 11,
+        frameBuffer: 11,
+      },
+      DeathLeft: {
+        imageSrc: './img/warrior/DeathLeft.png',
+        frameRate: 11,
+        frameBuffer: 11,
+      }
+
   },
   wPressTime : 0,
   fallEndTime : 0,
@@ -260,7 +294,26 @@ function animate() {
   // DRAW INVENTORY LOGIC
   inventory.drawInventory(c, camera);
 
+    // HURT AND DEATH
 
+
+    // If the player's health drops to 0, switch to the death animation
+  if (player.health <= 0) {
+    if (player.lastDirection === 'right') {
+      player.switchSprite('Death');
+    } else {
+      player.switchSprite('DeathLeft');
+    }
+  }
+
+  if (player.damageTaken > 0) {
+    if (player.lastDirection === 'right') {
+      player.switchSprite('Hurt');
+    } else {
+      player.switchSprite('HurtLeft');
+    }
+    player.health -= player.damageTaken;
+  }
 
   c.restore()
 }
@@ -356,7 +409,7 @@ window.addEventListener('keyup', (event) => {
       let elapsedTime = player.wPressTime - Date.now()  // Calculate the time elapsed since 'w' was pressed
      // console.log(player.wPressTime)
       console.log(elapsedTime)
-      if (elapsedTime >= -500) {
+      if (elapsedTime >= -1000) {
         // If 'w' was held down for 0.5 seconds or more, perform a charged jump
        
         performJump();
@@ -372,6 +425,21 @@ window.addEventListener('keyup', (event) => {
         }
 
         player.jumpChargeTime = 0;
+      }
+      break;
+  }
+})
+
+window.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case ' ':
+      // Only allow attacking if player is not charging, not in the fall animation, and not already attacking
+      if (!player.isJumpCharging && player.currentAnimation !== 'Fall' && player.currentAnimation !== 'Attack' && player.currentAnimation !== 'AttackLeft') {
+        if (player.lastDirection === 'right') {
+          player.switchSprite('Attack');
+        } else {
+          player.switchSprite('AttackLeft');
+        }
       }
       break;
   }
