@@ -21,11 +21,13 @@
 #hero {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   margin-bottom: 1rem;
+  padding: 0.5rem;
 }
 
 #backpack {
-  gap: 1rem;
+  gap: 0.2rem;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: repeat(4, 1fr);
@@ -38,8 +40,7 @@
   -5.2px 13.2px 9.3px rgba(0, 0, 0, 0.13),
   -6.4px 16.1px 13.7px rgba(0, 0, 0, 0.144),
   -7.9px 20px 20px rgba(0, 0, 0, 0.132),
-  -15px 38px 43px rgba(0, 0, 0, 0.25)
-;
+  -15px 38px 43px rgba(0, 0, 0, 0.25);
 }
 
 .inventory-slot > * {
@@ -72,6 +73,7 @@
   grid-area: name;
   text-align: center;
   font-weight: 800;
+  margin-block: 0;
 }
 
 .item-emoji {
@@ -139,6 +141,7 @@
 #hero-model {
   display: grid;
   grid-template-columns: min-content 1fr min-content;
+  grid-template-rows: repeat(3, 1fr);
   grid-template-areas:
     "lArm head rArm"
     "lArm body rArm"
@@ -191,6 +194,41 @@
   margin-bottom: 0;
 }
 
-#hero-model > * {
-  background-color: coral;
+#hero-stats {
+  border: 0.1rem solid black;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  padding-inline: 2rem;
+  padding-bottom: 1rem;
+}
+
+#hero-stats .stats{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-grow: 1;
+}
+
+.health-bar {
+  height: 1rem;
+  margin-block: 3px;
+  border: 3px solid crimson;
+  border-radius: 1rem;
+}
+
+.health-bar > * {
+  background-color: crimson;
+  height: 100%;
+  font-weight: 700;
+  font-size: smaller;
+  text-align: end;
+  padding-inline: 1rem;
+  border-radius: 0 1rem 1rem 0;
+}
+
+.character-currency {
+  display: flex;
+  justify-content: center;
+  gap: 1rem
 }
