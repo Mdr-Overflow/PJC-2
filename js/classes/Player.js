@@ -7,6 +7,8 @@ class Player extends Sprite {
     frameRate,
     scale = 0.5,
     animations,
+    loop,
+    attackBox = { offset: {}, width: undefined, height: undefined }
   }) {
     super({ imageSrc, frameRate, scale })
     this.position = position
@@ -25,6 +27,16 @@ class Player extends Sprite {
       },
       width: 12,
       height: 10,
+    }
+
+    this.attackBox = {
+      position: {
+        x: this.position.x,
+        y: this.position.y
+      },
+      offset: attackBox.offset,
+      width: attackBox.width,
+      height: attackBox.height
     }
 
     this.animations = animations
@@ -56,9 +68,50 @@ class Player extends Sprite {
      this.jumpsPerformed = 0;
      this.MaxJumps = 1;
      this.lastKeyPressTime = 0;
+     this.dead = false
   }
 
   switchSprite(key) {
+
+    // overriding all other animations for death anim
+    if (this.image === this.animations.Death.image) {
+      if (this.framesCurrent === this.animations.Death.framesMax - 1)
+        this.dead = true
+      return
+    }
+
+    if (this.image === this.animations.DeathLeft.image) {
+      if (this.framesCurrent === this.animations.DeathLeft.framesMax - 1)
+        this.dead = true
+      return
+    }
+
+    // overriding all other animations with the attack animation
+    if (
+      this.image === this.animations.Attack.image &&
+      this.framesCurrent < this.animations.Attack.framesMax - 1
+    )
+      return
+
+      if (
+        this.image === this.animations.AttackLeft.image &&
+        this.framesCurrent < this.animations.AttackLeft.framesMax - 1
+      )
+        return
+
+    // override when fighter gets hit
+    if (
+      this.image === this.animations.Hurt.image &&
+      this.framesCurrent < this.animations.Hurt.framesMax - 1
+    )
+      return
+
+      if (
+        this.image === this.animations.HurtLeft.image &&
+        this.framesCurrent < this.animations.HurtLeft.framesMax - 1
+      )
+        return
+
     if (this.image === this.animations[key].image || !this.loaded) return
 
     this.currentFrame = 0
@@ -122,7 +175,7 @@ class Player extends Sprite {
   shouldPanCameraUp({ canvas, camera }) {
     if (
       this.camerabox.position.y + this.camerabox.height + this.velocity.y >=
-      432
+      432   // CHANGE THIS TO MAX MAP HEIGHT
     )
       return
 
@@ -141,39 +194,59 @@ class Player extends Sprite {
     this.updateHitbox()
 
     this.updateCamerabox()
-    // c.fillStyle = 'rgba(0, 0, 255, 0.2)'
-    // c.fillRect(
-    //   this.camerabox.position.x,
-    //   this.camerabox.position.y,
-    //   this.camerabox.width,
-    //   this.camerabox.height
-    // )
+ 
 
-    // draws out the image
-    // c.fillStyle = 'rgba(0, 255, 0, 0.2)'
-    // c.fillRect(this.position.x, this.position.y, this.width, this.height)
-
-    // c.fillStyle = 'rgba(255, 0, 0, 0.2)'
-    // c.fillRect(
-    //   this.hitbox.position.x,
-    //   this.hitbox.position.y,
-    //   this.hitbox.width,
-    //   this.hitbox.height
-    // )
 
     this.draw()
+
+
 
     this.position.x += this.velocity.x
     this.updateHitbox()
     this.checkForHorizontalCollisions()
     this.applyGravity()
-    this.updateHitbox()
+    this.updateHitbox() 
     this.checkForVerticalCollisions()
+    
+     // attack boxes
+     this.attackBox.position.x = this.position.x + this.attackBox.offset.x
+     this.attackBox.position.y = this.position.y + this.attackBox.offset.y
+     
+    
     if (this.isJumpCharging) {
       this.jumpChargeTime += 0.016; // Assuming 60 FPS, so each frame is about 0.016 seconds
       console.log(this.jumpChargeTime)
     }
   }
+
+
+  attack() {
+
+    keys.space.pressed = true;
+    
+ 
+    this.isAttacking = true
+
+  }
+
+  takeHit() {
+    this.health -= 20
+
+    if (this.health <= 0) {
+
+      if (this.lastDirection === 'right') this.switchSprite('Death')
+      else this.switchSprite('DeathLeft')
+
+
+    } else {
+      
+      if (this.lastDirection === 'right') this.switchSprite('Hurt')
+      else this.switchSprite('HurtLeft')
+
+  }
+  }
+
+  
 
   updateHitbox() {
     this.hitbox = {

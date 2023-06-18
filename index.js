@@ -129,35 +129,41 @@ const player = new Player({
 
 
       Attack: {
-        imageSrc: './img/warrior/Attack.png',
+        imageSrc: './img/warrior/Attack2.png',
         frameRate: 6,
-        frameBuffer: 111,
+        frameBuffer: 1,
+        loop: false,
       },
 
       AttackLeft: {
         imageSrc: './img/warrior/AttackLeft.png',
         frameRate: 6,
-        frameBuffer: 111,
+        frameBuffer: 1,
+        loop: false,
       },
       Hurt: {
         imageSrc: './img/warrior/Hurt.png',
         frameRate: 4,
         frameBuffer: 8,
+        loop: false,
       },
       HurtLeft: {
         imageSrc: './img/warrior/HurtLeft.png',
         frameRate: 4,
         frameBuffer: 8,
+        loop: false,
       },
       Death: {
         imageSrc: './img/warrior/Death.png',
         frameRate: 11,
         frameBuffer: 11,
+        loop: false,
       },
       DeathLeft: {
         imageSrc: './img/warrior/DeathLeft.png',
         frameRate: 11,
         frameBuffer: 11,
+        loop: false,
       }
 
   },
@@ -165,7 +171,17 @@ const player = new Player({
   fallEndTime : 0,
   MaxJumps : 1,
   jumpsPerformed : 0 ,
-  lastKeyPressTime : 0
+  lastKeyPressTime : 0,
+
+  attackBox: {
+    offset: {
+      x: 100,
+      y: 300
+    },
+    width: 14,                ///  TEST A LOT
+    height: 12
+  }
+
 })
 
 let inventory = new BackPack();
@@ -191,6 +207,9 @@ const keys = {
   },
   w: {
     pressed: false,
+  },
+  space: {
+    pressed: false
   }
 
 }
@@ -275,7 +294,9 @@ function animate() {
       player.switchSprite('FallLeft');
     }
   }
+    
 
+  
     // If the fall animation has just ended, record the time
     if (this.currentAnimation !== 'Fall' && this.previousAnimation === 'Fall') {
       player.fallEndTime = Date.now();
@@ -315,6 +336,18 @@ function animate() {
     player.health -= player.damageTaken;
   }
 
+
+  // ATTACK
+
+  if (!player.isJumpCharging && player.currentAnimation !== 'Fall' && player.currentAnimation !== 'Attack' && player.currentAnimation !== 'AttackLeft' 
+   &&  keys.space.pressed ) {
+    if (player.lastDirection === 'right') {
+      player.switchSprite('Attack');
+    } else {
+      player.switchSprite('AttackLeft');
+    }
+  }
+
   c.restore()
 }
 
@@ -326,12 +359,12 @@ function performJump() {
 
   player.wPressTime = 0;
 
-  if (player.jumpChargeTime >= 0 && player.jumpChargeTime < 0.5 ) {
+  if (player.jumpChargeTime >= 0.1 && player.jumpChargeTime < 1.0 ) {
     // Small jump
-    jumpStrength = -3 ;
+    jumpStrength = -3 * 1.1 ;
     player.jumpChargeTime = 0;
 
-  } else if (player.jumpChargeTime >= 0.5 && player.jumpChargeTime < 1.0) {
+  } else if (player.jumpChargeTime >= 1.0 && player.jumpChargeTime < 1.5) {
     // Medium jump
     jumpStrength = -3 * 1.25;
     player.jumpChargeTime = 0;
@@ -417,7 +450,7 @@ window.addEventListener('keyup', (event) => {
      // console.log(player.wPressTime)
       console.log(elapsedTime)
       if (elapsedTime >= -1000) {
-        // If 'w' was held down for 0.5 seconds or more, perform a charged jump
+        // If 'w' was held down for 1.0 seconds or more, perform a charged jump
        
         performJump();
         player.jumpsPerformed++; // Increment the number of jumps performed
@@ -434,20 +467,20 @@ window.addEventListener('keyup', (event) => {
         player.jumpChargeTime = 0;
       }
       break;
+    case ' ':
+      keys.space.pressed = false;
+
+      
+
+      break
   }
 })
 
 window.addEventListener('keydown', (event) => {
   switch (event.key) {
     case ' ':
-      // Only allow attacking if player is not charging, not in the fall animation, and not already attacking
-      if (!player.isJumpCharging && player.currentAnimation !== 'Fall' && player.currentAnimation !== 'Attack' && player.currentAnimation !== 'AttackLeft') {
-        if (player.lastDirection === 'right') {
-          player.switchSprite('Attack');
-        } else {
-          player.switchSprite('AttackLeft');
-        }
-      }
+         
+        player.attack();
       break;
   }
 });
