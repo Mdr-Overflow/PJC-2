@@ -1,20 +1,36 @@
 #inventory {
   --inv-color: 0 15% 50%;
 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
   position: fixed;
   top: 55px;
   right: 45px;
-  height: 50%;
+  height: 85vh;
   width: 70%;
+  max-width: 850px;
 
-  background-color: hsl(var(--inv-color) / 80%);
-  border: 0.5rem hsl(var(--inv-color)) solid;
+  background-color: hsl(0 15% 50% / 80%);
+  border: 0.5rem hsl(0 15% 40%) solid;
 
+  grid-template-rows: auto 1fr auto 1fr;
 
+  padding: 0.5rem;
+}
+
+#hero {
   display: grid;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
+#backpack {
+  gap: 0.2rem;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   padding: 0.5rem;
 }
 
@@ -24,8 +40,7 @@
   -5.2px 13.2px 9.3px rgba(0, 0, 0, 0.13),
   -6.4px 16.1px 13.7px rgba(0, 0, 0, 0.144),
   -7.9px 20px 20px rgba(0, 0, 0, 0.132),
-  -15px 38px 43px rgba(0, 0, 0, 0.25)
-;
+  -15px 38px 43px rgba(0, 0, 0, 0.25);
 }
 
 .inventory-slot > * {
@@ -58,12 +73,25 @@
   grid-area: name;
   text-align: center;
   font-weight: 800;
+  margin-block: 0;
 }
 
 .item-emoji {
   grid-area: emoji;
   text-align: center;
-  font-size: 3em;
+  align-self: stretch;
+  font-size: 2em;
+  border-right: 0.1rem solid black;
+  margin-bottom: -0.4rem;
+  padding-bottom: 0.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-stats {
+  grid-area: stats;
+  padding-left: 1rem;
 }
 
 .item-stats > * {
@@ -91,4 +119,116 @@
 
 #inventory-icon:hover {
   transform: scale(1.1);
+}
+
+.inventory-title {
+  justify-self: center;
+  text-align: center;
+  width: 200px;
+  border-radius: 10px 10px 0 0;
+  padding-block: 0.5rem;
+  margin-block: 0;
+}
+
+.hero-bg{
+  background-color: hsl(50 15% 50% / 80%);
+}
+
+.backpack-bg {
+  background-color: hsl(90 15% 50% / 80%);
+}
+
+#hero-model {
+  display: grid;
+  grid-template-columns: min-content 1fr min-content;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+    "lArm head rArm"
+    "lArm body rArm"
+    "lArm legs rArm"
+  ;
+}
+
+#left-arm{
+  display: flex;
+  grid-area: lArm;
+}
+
+#head {
+  grid-area: head;
+}
+
+#body {
+  grid-area: body;
+}
+
+#right-arm {
+  display: flex;
+  grid-area: rArm;
+}
+
+#right-arm > .inventory-slot,
+#left-arm > .inventory-slot {
+  grid-template-areas:
+    "name   name"
+    "emoji  emoji"
+    "stats  stats"
+    "durab  durab";
+}
+
+#head > .inventory-slot,
+#body > .inventory-slot,
+#legs > .inventory-slot {
+  grid-template-columns: auto auto 10ch;
+  grid-template-areas:
+    "name   emoji  stats"
+    "durab  durab   stats";
+  align-items: center;
+}
+
+
+#right-arm .item-emoji,
+#left-arm .item-emoji {
+  border: none;
+  border-bottom: 0.1rem solid black;
+  margin-bottom: 0;
+}
+
+#hero-stats {
+  border: 0.1rem solid black;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  padding-inline: 2rem;
+  padding-bottom: 1rem;
+}
+
+#hero-stats .stats{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-grow: 1;
+}
+
+.health-bar {
+  height: 1rem;
+  margin-block: 3px;
+  border: 3px solid crimson;
+  border-radius: 1rem;
+}
+
+.health-bar > * {
+  background-color: crimson;
+  height: 100%;
+  font-weight: 700;
+  font-size: smaller;
+  text-align: end;
+  padding-inline: 1rem;
+  border-radius: 0 1rem 1rem 0;
+}
+
+.character-currency {
+  display: flex;
+  justify-content: center;
+  gap: 1rem
 }

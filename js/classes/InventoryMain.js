@@ -4,6 +4,8 @@ class Inventory {
 	constructor() {
 		this.items = [];
 		this.inventory_container = document.querySelector("#inventory");
+		this.backpack_container = document.querySelector('#backpack');
+		this.hero_container = document.querySelector('#hero')
 	}
 
 	/**
@@ -148,15 +150,8 @@ class BackPack extends Inventory {
     this.renderInventory = this.displayInventory;
   }
 
-  drawInventory(c, camera) {
-    if (this.displayInventory) {
-			this.inventory_container.style.display = "grid";
-    } else {
-      this.inventory_container.style.display = "none";
-    }
-
-    if (this.renderInventory) {
-      const durabilityScale = ["🟢", "🟡", "🟠", "🔴", "⚫"];
+	renderBackpack() {
+		const durabilityScale = ['⚫', '🔴', '🟠', '🟡', '🟢'];
       const inventory_slots = this.items.map(
         (item) => /*html*/ `<div class="inventory-slot">
 					<p class="item-title">${item.itemName}</p>
@@ -180,90 +175,21 @@ class BackPack extends Inventory {
 				</div>`
       );
 
-      this.inventory_container.innerHTML = inventory_slots.join("");
+      this.backpack_container.innerHTML = inventory_slots.join("");
+	}
+
+  drawInventory(c, camera) {
+    if (this.displayInventory) {
+			this.inventory_container.style.display = "grid";
+    } else {
+      this.inventory_container.style.display = "none";
+    }
+
+    if (this.renderInventory) {
+      this.renderBackpack();
 			this.renderInventory = false;
     }
   }
 
-  // drawInventory(c, camera) {
-  //   if (!this.showInventory) return;
-
-  //   // Define the size and layout of the grid
-  //   const boxSize = 50;
-  //   const boxesPerRow = 4;
-  //   const numRows = 3;
-
-  //   // Draw the inventory box
-  //   c.fillStyle = "rgba(0, 0, 0, 0.5)";
-  //   c.fillRect(
-  //     10 - camera.position.x,
-  //     10 - camera.position.y,
-  //     boxesPerRow * boxSize,
-  //     numRows * boxSize
-  //   );
-
-  //   // Draw the items in a grid of boxes
-  //   c.fillStyle = "white";
-  //   this.items.forEach((item, index) => {
-  //     const row = Math.floor(index / boxesPerRow);
-  //     const col = index % boxesPerRow;
-
-  //     const x = 10 + col * boxSize - camera.position.x;
-  //     const y = 10 + row * boxSize - camera.position.y;
-
-  //     // Draw the item name
-  //     c.font = `${boxSize / 8}px Arial`;
-  //     c.fillText(item.itemName, x + 5, y + 10);
-
-  //     // Draw the item emoji
-  //     c.font = `${boxSize / 3}px Arial`;
-  //     c.fillText(item.emoji, x + 5, y + boxSize / 2 + 10);
-
-  //     // Draw item stats
-  //     c.font = `${boxSize / 9}px Arial`;
-  // 		const offsetX = boxSize / 2 + 3;
-  // 		const offsetY = 15;
-  // 		const step = boxSize / 8 + 1
-  //     c.fillText(`💕 ${item.itemStats.additionalHealth}`, x + offsetX, y + offsetY + step);
-  //     c.fillText(`🦘 ${item.itemStats.jumpIncrease}`, x + offsetX, y + offsetY + step * 2);
-  //     c.fillText(`🚧 ${item.itemStats.pushResistance}`, x + offsetX, y + offsetY + step * 3);
-
-  //     // Draw item durability
-  //     const durability = item.itemDurability / item.itemMaxDurability;
-  //     const durabilityScale = ['🟢', '🟡', '🟠', '🔴', '⚫'];
-  //     const numDurabilitySymbols = Math.floor(durability * 5);
-  //     const durabilitySymbols = durabilityScale[numDurabilitySymbols];
-  //     c.font = `${boxSize / 10}px Arial`;
-  //     c.fillText(`Durability: ${durabilitySymbols}`, x + 4, y + boxSize - 5);
-
-  //     // this.itemDurability = itemDurability; 🧊 🟢🟡🟠🔴⚫
-  //     // this.itemMaxDurability = itemMaxDurability;
-  //     // this.itemStats = {
-  //     // 		additionalHealth: additionalHealth, 💕
-  //     // 		jumpIncrease: jumpIncrease, 🦘
-  //     // 		pushResistance: pushResistance, 🚧
-  //     // };
-  //     // // Draw the item sprite
-  //     // if (!item.sprite) {
-  //     //   console.error(
-  //     //     `Item ${item.itemName} has no sprite, setting default sprite.`
-  //     //   );
-  //     //   item.sprite = new Sprite({
-  //     //     position: { x: x, y: y },
-  //     //     imageSrc: "./img/itemExample.png",
-  //     //     boxSize: boxSize,
-  //     //   });
-  //     // }
-  //     // item.sprite.position = { x: x, y: y };
-  //     // item.sprite.update();
-
-  //     // Draw the border for each box
-  //     c.strokeStyle = "white";
-  //     c.lineWidth = 2;
-  //     c.strokeRect(x, y, boxSize, boxSize);
-  //   });
-  // }
-  // GRAPHICAL PART // GRAPHICAL PART// GRAPHICAL PART // GRAPHICAL PART // GRAPHICAL PART // GRAPHICAL PART // GRAPHICAL PART
-  // GRAPHICAL PART // GRAPHICAL PART // GRAPHICAL PART
   // GRAPHICAL PART // GRAPHICAL PART
 }
