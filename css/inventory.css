@@ -1,0 +1,93 @@
+#inventory {
+  --inv-color: 0 15% 50%;
+
+  position: fixed;
+  top: 55px;
+  right: 45px;
+  height: 50%;
+  width: 70%;
+
+  background-color: hsl(var(--inv-color) / 80%);
+  border: 0.5rem hsl(var(--inv-color)) solid;
+
+  
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+.smooth-shadow {
+  box-shadow:
+  -3.5px 8.9px 4.9px rgba(0, 0, 0, 0.082),
+  -5.2px 13.2px 9.3px rgba(0, 0, 0, 0.13),
+  -6.4px 16.1px 13.7px rgba(0, 0, 0, 0.144),
+  -7.9px 20px 20px rgba(0, 0, 0, 0.132),
+  -15px 38px 43px rgba(0, 0, 0, 0.25)
+;
+}
+
+.inventory-slot > * {
+  margin: 0;
+  cursor: default;
+}
+
+.inventory-slot {
+  border: 0.1rem solid black;
+  border-radius: 0.1rem;
+  padding: 0.5rem;
+
+  display: grid;
+  grid-template-areas:
+    "name   name    name"
+    "emoji  emoji   stats"
+    "emoji  emoji   stats"
+    "durab  durab   durab";
+
+  background-color: hsl(0 15% 50% / 80%);
+  transition: all 300ms;
+}
+
+.inventory-slot:hover {
+  background-color: hsl(50, 20%, 40%);
+  transform: scale(1.1);
+}
+
+.item-title {
+  grid-area: name;
+  text-align: center;
+  font-weight: 800;
+}
+
+.item-emoji {
+  grid-area: emoji;
+  font-size: 3em;
+}
+
+.item-stats > * {
+  cursor: default;
+  grid-area: stats;
+  margin: 0.1rem;
+}
+.item-durability {
+  grid-area: durab;
+  text-align: center;
+  border-top: 0.1rem solid black;
+  margin-top: 0.4rem;
+}
+
+#inventory-icon {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  height: 64px;
+  aspect-ratio: 1;
+  transition: all 300ms;
+  cursor: pointer;
+  z-index: 2;
+}
+
+#inventory-icon:hover {
+  transform: scale(1.1);
+}
