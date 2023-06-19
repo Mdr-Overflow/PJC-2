@@ -7,6 +7,7 @@ import {
 const start = document.getElementById("start");
 const opt = document.getElementById("opt");
 const popup = document.getElementById("popup");
+const load = document.getElementById("load");
 const closeBtn = document.querySelector(".close");
 const popupText = document.getElementsByClassName("popup-content");
 
@@ -37,7 +38,8 @@ let isOpen = false;
 
 start.addEventListener("click", (e) => {
   e.preventDefault();
-  window.location.href = ""; // Replace with your game page URL
+  localStorage.clear();
+  window.location.href = "index.html"; // 
 });
 
 opt.addEventListener("click", (e) => {
@@ -54,6 +56,11 @@ opt.addEventListener("keydown", (e) => {
 closeBtn.addEventListener("click", () => {
   togglePopup();
 });
+
+load.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.location.href = "index.html";  //
+  });
 
 function togglePopup() {
   isOpen = !isOpen;

@@ -266,6 +266,13 @@ const camera = {
   },
 }
 
+
+// LOAD PLAYER STUFF
+
+player.loadState(camera);
+playMusic();
+
+
 function animate() {
   window.requestAnimationFrame(animate)
   c.fillStyle = 'white'
@@ -283,7 +290,7 @@ function animate() {
   //   block.update()
   // })
 
-
+ 
 
 
   player.checkForHorizontalCanvasCollision()
@@ -444,22 +451,6 @@ if (player.velocity.y < 0) {
     // HURT AND DEATH
 
 
-  //     // this is where our player gets hit
-  // if (
-  //   rectangularCollision({
-  //     rectangle1: enemy,
-  //     rectangle2: player
-  //   }) &&
-  //   enemy.isAttacking &&
-  //   enemy.framesCurrent === 2
-  // ) {
-  //   player.takeHit()
-  //   enemy.isAttacking = false
-
-  //   gsap.to('#playerHealth', {
-  //     width: player.health + '%'
-  //   })
-  // }
 
 
     // If the player's health drops to 0, switch to the death animation
@@ -504,9 +495,17 @@ if (player.velocity.y < 0) {
   player.isAttacking = false
 }
   
+player.cameraPosition.x = camera.position.x;
+player.cameraPosition.y = camera.position.y;
 
+console.log(player.position.x, player.position.y)
   c.restore()
+
+
+  
 }
+
+
 
 animate()
 
@@ -735,4 +734,72 @@ window.addEventListener('keydown', (event) => {
         player.animationQueue.push('attack');
       break;
   }
+})
+
+
+
+function playMusic(){
+
+  // Define an Audio object and provide the path to the music file
+let music = new Audio('img\\S1Music.mp3');
+
+// Set the music to play automatically and loop when it finishes
+music.autoplay = true;
+music.loop = true;
+
+// Control the volume of the music (0 is mute, 1 is maximum)
+music.volume = 0.1;
+
+// Start playing the music
+music.play();
+
+}
+
+
+
+// Define a function to stop the music
+function stopMusic() {
+  music.pause();  // Pause the music
+  music.currentTime = 0;  // Reset the music to the start
+}
+
+
+window.addEventListener('keydown', (e) => {
+  e.preventDefault();
+
+  if (e.key === 'Escape') {
+
+    e.preventDefault();
+    window.location.href = "test.html";
+    player.saveState();
+    stopMusic();
+
+
+  }
+
+
+  
 });
+// 484.74 37.99000000000001
+someWinningXPosition = 484.74;
+someWinningYPosition = 37.99;
+
+
+// Listen for the restart button click
+document.getElementById('restart-button').addEventListener('click', function() {
+  document.getElementById('win-card').style.display = 'none';
+  window.location.href = "test.html";
+})
+
+function checkWinCondition() {
+  if (player.position.x > someWinningXPosition && player.position.y > someWinningYPosition) {
+    // If the player has reached the winning position, show the win card
+    document.getElementById('win-card').style.display = 'block';
+    // Optionally stop the game or the music when the player wins
+    stopMusic();
+    // stopGame();
+  }
+}
+
+// Run the checkWinCondition function every frame or at an interval of your choosing
+setInterval(checkWinCondition, 100); // check every 100ms

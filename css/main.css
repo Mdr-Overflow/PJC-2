@@ -29,3 +29,29 @@
       transform: translate(-50%, -60%);
     }
   }
+
+
+  .win-card {
+    display: none; /* initially hide the card */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* semi-transparent black */
+    text-align: center;
+  }
+  
+  .win-card h1 {
+    color: white;
+    margin-top: 20%;
+    font-size: 3em;
+  }
+  
+  #restart-button {
+    display: block;
+    margin: 2em auto;
+    padding: 1em;
+    font-size: 1.5em;
+  }

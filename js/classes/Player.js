@@ -58,8 +58,8 @@ class Player extends Sprite {
         x: this.position.x,
         y: this.position.y,
       },
-      width: 300,  //200
-      height: 80,  // 80
+      width: 500,  //200
+      height: 100,  // 80
     }
 
       
@@ -86,7 +86,10 @@ class Player extends Sprite {
      this.armour = armour;
 
      this.canvasSizeHoriz = canvasSizeHoriz;
-
+     this.cameraPosition = {
+      x: 0,
+      y: 0,
+       }
   }
 
   switchSprite(key) {
@@ -105,7 +108,10 @@ class Player extends Sprite {
 
   }
 
+  
   updateCamerabox() {
+
+    
     this.camerabox = {
       position: {
         x: this.position.x - 50,
@@ -326,5 +332,37 @@ class Player extends Sprite {
         }
       }
     }
+
+    
+    
+  }
+
+
+  saveState() {
+    const state = {
+      position: this.position,
+      velocity: this.velocity,
+      health: this.health,
+      armour: this.armour,
+      attackDmg: this.attackDmg,
+      cameraPosition: camera.position,
+   
+    };
+  
+    localStorage.setItem('playerState', JSON.stringify(state));
+  }
+  
+
+  loadState(camera) {
+    const stateStr = localStorage.getItem('playerState');
+    if (!stateStr) return;
+  
+    const state = JSON.parse(stateStr);
+    this.position = state.position;
+    this.velocity = state.velocity;
+    this.health = state.health;
+    this.armour = state.armour;
+    this.attackDmg = state.attackDmg;
+    this.cameraPosition = state.cameraPosition
   }
 }

@@ -208,6 +208,10 @@ class BackPack extends Inventory {
     this.hero_equipment[equipIndex] = this.current_backpack_item;
     this.current_backpack_item = null;
     this.renderInventory = true;
+
+	// HANDLE PLAYER
+
+
   }
 
   dropCurrentBackpackItem() {
