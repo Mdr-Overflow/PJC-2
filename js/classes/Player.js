@@ -111,8 +111,8 @@ class Player extends Sprite {
         x: this.position.x - 50,
         y: this.position.y,
       },
-      width: 200,
-      height: 80,
+      width: 100,  // 200
+      height: 80, //80
     }
   }
 
@@ -158,7 +158,7 @@ class Player extends Sprite {
   shouldPanCameraUp({ canvas, camera }) {
     if (
       this.camerabox.position.y + this.camerabox.height + this.velocity.y >=
-      432   // CHANGE THIS TO MAX MAP HEIGHT
+      this.canvasSizeHoriz   // CHANGE THIS TO MAX MAP HEIGHT
     )
       return
 
@@ -258,10 +258,10 @@ class Player extends Sprite {
         if (this.velocity.x < 0) {
           this.velocity.x = 0
 
-          const offset = this.hitbox.position.x - this.position.x
+          const offset = this.hitbox.position.x - this.position.x + this.hitbox.width
 
           this.position.x =
-            collisionBlock.position.x + collisionBlock.width - offset + 0.01
+            collisionBlock.position.x + collisionBlock.width - offset - 0.01
           break
         }
       }

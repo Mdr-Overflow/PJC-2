@@ -19,8 +19,8 @@ const scaledCanvas = {
 }
 
 const floorCollisions2D = []
-for (let i = 0; i < floorCollisions.length; i += 32) {   //36
-  floorCollisions2D.push(floorCollisions.slice(i, i + 32))
+for (let i = 0; i < floorCollisions.length; i += 68) {   //36
+  floorCollisions2D.push(floorCollisions.slice(i, i + 68))
 }
 
 const collisionBlocks = []
@@ -40,8 +40,8 @@ floorCollisions2D.forEach((row, y) => {
 })
 
 const platformCollisions2D = []
-for (let i = 0; i < platformCollisions.length; i += 32) {
-  platformCollisions2D.push(platformCollisions.slice(i, i + 32))
+for (let i = 0; i < platformCollisions.length; i += 68) {
+  platformCollisions2D.push(platformCollisions.slice(i, i + 68))
 }
 
 const platformCollisionBlocks = []
@@ -79,8 +79,8 @@ const shop = new Sprite({
 
 const player = new Player({
   position: {
-    x: 100,
-    y: 300,
+    x: 300,  //300 si 100
+    y: 2200,
   },
   canvasSizeHoriz : 2240, 
   collisionBlocks,
@@ -91,7 +91,7 @@ const player = new Player({
     Idle: {
       imageSrc: './img/warrior/Idle.png',
       frameRate: 11,
-      frameBuffer: 11,
+      frameBuffer: 5,
     //  loop: true,
     },
     Run: {
@@ -275,6 +275,9 @@ function animate() {
   //   block.update()
   // })
 
+
+
+
   player.checkForHorizontalCanvasCollision()
   player.update()
 
@@ -370,12 +373,12 @@ if (player.velocity.y < 0) {
 
   if (keys.d.pressed) {
     player.switchSprite('Run');
-    player.velocity.x = 1;
+    player.velocity.x = 1.25;
     player.lastDirection = 'right';
     player.shouldPanCameraToTheLeft({ canvas, camera });
   } else if (keys.a.pressed) {
     player.switchSprite('RunLeft');
-    player.velocity.x = -1;
+    player.velocity.x = -1.25;
     player.lastDirection = 'left';
     player.shouldPanCameraToTheRight({ canvas, camera });
   } else {
@@ -507,16 +510,16 @@ function performJump() {
 
   if (player.jumpChargeTime >= 0.1 && player.jumpChargeTime < 1.0 ) {
     // Small jump
-    jumpStrength = -3 * 1.1 ;
+    jumpStrength = -3 * 1.2 ;
     player.jumpChargeTime = 0;
 
   } else if (player.jumpChargeTime >= 1.0 && player.jumpChargeTime < 1.5) {
     // Medium jump
-    jumpStrength = -3 * 1.2;
+    jumpStrength = -3 * 1.3;
     player.jumpChargeTime = 0;
   } else if (player.jumpChargeTime >= 1.5) {
     // Max jump
-    jumpStrength = -3 * 1.3;
+    jumpStrength = -3 * 1.4;
     player.jumpChargeTime = 0;
   }
   else{
