@@ -216,9 +216,17 @@ let inventory = new BackPack();
 let store = new ItemStore();
 
 let sword = store.getItem("Sword of Valor"); // Shield of Aegis
-let shield = store.getItem("Shield of Aegis")
-inventory.addItem(sword)
-inventory.addItem(shield)
+let shield = store.getItem("Shield of Aegis");
+let helmet = store.getItem("Great Helmet");
+let t_shirt = store.getItem("Simple T-shirt");
+let shoes = store.getItem("Fancy Shoes");
+
+
+inventory.addItem(sword);
+inventory.addItem(shield);
+inventory.addItem(helmet);
+inventory.addItem(t_shirt);
+inventory.addItem(shoes);
 // inventory.addItem('sword', 'This sword has the blessing of the wind');
 
 inventory.getItems();
@@ -623,6 +631,50 @@ document
   .addEventListener("click", (event) => {
     inventory.showInventory();
   });
+
+// Backpack inventory slots click event
+document
+  .querySelector("#backpack")
+  .addEventListener("click", (event) => {
+    // Find the closest parent element with the inventory-slot class
+    const inventorySlot = event.target.closest('.inventory-slot');
+
+    // Check if an inventory slot was found
+    if (inventorySlot) {
+      if(inventorySlot.classList.contains("current")){
+        const actionButton = event.target.closest('button');
+        inventory.performBackpackItemAction(actionButton.dataset.action)
+      } else {
+        // Get the item title from the inventory slot
+        const itemTitle = inventorySlot.querySelector('.item-title').textContent;
+        inventory.selectBackpackItem(itemTitle);
+      }
+    } else {
+      inventory.selectBackpackItem(null);
+    }
+  })
+
+// Backpack inventory slots click event
+document
+  .querySelector("#hero-model")
+  .addEventListener("click", (event) => {
+    // Find the closest parent element with the inventory-slot class
+    const inventorySlot = event.target.closest('.inventory-slot');
+
+    // Check if an inventory slot was found
+    if (inventorySlot) {
+      if(inventorySlot.classList.contains("current")){
+        const actionButton = event.target.closest('button');
+        inventory.performHeroItemAction(actionButton.dataset.action)
+      } else {
+        // Get the item title from the inventory slot
+        const itemTitle = inventorySlot.querySelector('.item-title').textContent;
+        inventory.selectHeroItem(itemTitle);
+      }
+    } else {
+      inventory.selectHeroItem(null);
+    }
+  })
 
 window.addEventListener('keyup', (event) => {
   switch (event.key) {
