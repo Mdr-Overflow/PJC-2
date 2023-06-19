@@ -14,19 +14,19 @@ canvas.width = displayWidth
 canvas.height = displayHeight
 
 const scaledCanvas = {
-  width: canvas.width / 4,
-  height: canvas.height / 4,
+  width: canvas.width / 4 , // /4    576 1092  , 7.5
+  height: canvas.height / 4,  // /4  432 2340 , 21.6
 }
 
 const floorCollisions2D = []
-for (let i = 0; i < floorCollisions.length; i += 36) {
-  floorCollisions2D.push(floorCollisions.slice(i, i + 36))
+for (let i = 0; i < floorCollisions.length; i += 32) {   //36
+  floorCollisions2D.push(floorCollisions.slice(i, i + 32))
 }
 
 const collisionBlocks = []
 floorCollisions2D.forEach((row, y) => {
   row.forEach((symbol, x) => {
-    if (symbol === 202) {
+    if (symbol === 2256) {
       collisionBlocks.push(
         new CollisionBlock({
           position: {
@@ -40,14 +40,14 @@ floorCollisions2D.forEach((row, y) => {
 })
 
 const platformCollisions2D = []
-for (let i = 0; i < platformCollisions.length; i += 36) {
-  platformCollisions2D.push(platformCollisions.slice(i, i + 36))
+for (let i = 0; i < platformCollisions.length; i += 32) {
+  platformCollisions2D.push(platformCollisions.slice(i, i + 32))
 }
 
 const platformCollisionBlocks = []
 platformCollisions2D.forEach((row, y) => {
   row.forEach((symbol, x) => {
-    if (symbol === 202) {
+    if (symbol === 2256) {
       platformCollisionBlocks.push(
         new CollisionBlock({
           position: {
@@ -63,12 +63,26 @@ platformCollisions2D.forEach((row, y) => {
 
 const gravity = 0.08
 
+// 1192 2240
+
+const shop = new Sprite({
+  position: {
+    x: 0,
+    y: 0
+  },
+  imageSrc: './assets/shop.png',
+  scale: 2.75,
+  framesMax: 6
+})
+
+
+
 const player = new Player({
   position: {
     x: 100,
     y: 300,
   },
-  
+  canvasSizeHoriz : 2240, 
   collisionBlocks,
   platformCollisionBlocks,
   imageSrc: './img/warrior/Idle.png',
@@ -235,7 +249,7 @@ const background = new Sprite({
   imageSrc: './img/background.png',
 })
 
-const backgroundImageHeight = 432
+const backgroundImageHeight = 2240 // 432
 
 const camera = {
   position: {
@@ -419,6 +433,24 @@ if (player.velocity.y < 0) {
     // HURT AND DEATH
 
 
+  //     // this is where our player gets hit
+  // if (
+  //   rectangularCollision({
+  //     rectangle1: enemy,
+  //     rectangle2: player
+  //   }) &&
+  //   enemy.isAttacking &&
+  //   enemy.framesCurrent === 2
+  // ) {
+  //   player.takeHit()
+  //   enemy.isAttacking = false
+
+  //   gsap.to('#playerHealth', {
+  //     width: player.health + '%'
+  //   })
+  // }
+
+
     // If the player's health drops to 0, switch to the death animation
   if (player.health <= 0) {
     if (player.lastDirection === 'right') {
@@ -455,6 +487,11 @@ if (player.velocity.y < 0) {
    }
 }}
 
+
+ // if player misses
+ if (player.isAttacking && player.currentFrame === 4) {
+  player.isAttacking = false
+}
   
 
   c.restore()

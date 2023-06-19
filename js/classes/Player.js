@@ -8,7 +8,11 @@ class Player extends Sprite {
     scale = 0.5,
     animations,
     loop,
-    attackBox = { offset: {}, width: undefined, height: undefined }
+    attackBox = { offset: {}, width: undefined, height: undefined },
+    attackDmg = 10, 
+    armour = 0,
+    health = 20,
+    canvasSizeHoriz = 576,
   }) {
     super({ imageSrc, frameRate, scale })
     this.position = position
@@ -54,8 +58,8 @@ class Player extends Sprite {
         x: this.position.x,
         y: this.position.y,
       },
-      width: 200,
-      height: 80,
+      width: 300,  //200
+      height: 80,  // 80
     }
 
       
@@ -73,48 +77,21 @@ class Player extends Sprite {
      this.canMove = true;
      this.lastAnimationEndTime = 0;
      this.maxQueueSize = 3;
+
+     this.health = 20; 
+     this.damageTaken = 0; 
+
+     this.armour = armour;
+     this.attackDmg = attackDmg;
+     this.armour = armour;
+
+     this.canvasSizeHoriz = canvasSizeHoriz;
+
   }
 
   switchSprite(key) {
 
-    // overriding all other animations for death anim
-    // if (this.image === this.animations.Death.image) {
-    //   if (this.framesCurrent === this.animations.Death.frameRate - 1)
-    //     this.dead = true
-    //   return
-    // }
-
-    // if (this.image === this.animations.DeathLeft.image) {
-    //   if (this.framesCurrent === this.animations.DeathLeft.frameRate - 1)
-    //     this.dead = true
-    //   return
-    // }
-
-    // // overriding all other animations with the attack animation
-    // if (
-    //   this.image === this.animations.Attack.image &&
-    //   this.framesCurrent < this.animations.Attack.frameRate - 1
-    // )
-    //   return
-
-    //   if (
-    //     this.image === this.animations.AttackLeft.image &&
-    //     this.framesCurrent < this.animations.AttackLeft.frameRate - 1
-    //   )
-    //     return
-
-    // // override when fighter gets hit
-    // if (
-    //   this.image === this.animations.Hurt.image &&
-    //   this.framesCurrent < this.animations.Hurt.frameRate - 1
-    // )
-    //   return
-
-    //   if (
-    //     this.image === this.animations.HurtLeft.image &&
-    //     this.framesCurrent < this.animations.HurtLeft.frameRate - 1
-    //   )
-    //     return 
+   
 
     if (this.image === this.animations[key].image || !this.loaded) return
     if ( true === this.animations[key].loop ){
@@ -123,8 +100,7 @@ class Player extends Sprite {
     this.image = this.animations[key].image
     this.frameBuffer = this.animations[key].frameBuffer
     this.frameRate = this.animations[key].frameRate
-    this.health = 100; 
-    this.damageTaken = 0; 
+
 
 
   }
@@ -142,7 +118,7 @@ class Player extends Sprite {
 
   checkForHorizontalCanvasCollision() {
     if (
-      this.hitbox.position.x + this.hitbox.width + this.velocity.x >= 576 ||
+      this.hitbox.position.x + this.hitbox.width + this.velocity.x >= this.canvasSizeHoriz ||
       this.hitbox.position.x + this.velocity.x <= 0
     ) {
       this.velocity.x = 0
@@ -153,7 +129,7 @@ class Player extends Sprite {
     const cameraboxRightSide = this.camerabox.position.x + this.camerabox.width
     const scaledDownCanvasWidth = canvas.width / 4
 
-    if (cameraboxRightSide >= 576) return
+    if (cameraboxRightSide >= this.canvasSizeHoriz) return
 
     if (
       cameraboxRightSide >=
@@ -230,28 +206,21 @@ class Player extends Sprite {
   attack() {
 
     keys.space.pressed = true;
-    
- 
     this.isAttacking = true
 
   }
 
-  takeHit() {
-    this.health -= 20
-
-    if (this.health <= 0) {
-
-      if (this.lastDirection === 'right') this.switchSprite('Death')
-      else this.switchSprite('DeathLeft')
-
-
-    } else {
-      
-      if (this.lastDirection === 'right') this.switchSprite('Hurt')
-      else this.switchSprite('HurtLeft')
-
-  }
-  }
+  takeHit(dmg) {
+      this.health += dmg - this.armour;
+  
+      if (this.health <= 0) {
+        if (this.lastDirection === 'right') this.switchSprite('Death')
+        else this.switchSprite('DeathLeft')
+      } else {
+        if (this.lastDirection === 'right') this.switchSprite('Hurt')
+        else this.switchSprite('HurtLeft')
+      }
+    }
 
   
 
