@@ -49,6 +49,9 @@
 }
 
 .inventory-slot {
+  /* used for .equip button absolute positioning */
+  position: relative;
+
   border: 0.1rem solid black;
   border-radius: 0.1rem;
   padding: 0.5rem;
@@ -67,6 +70,45 @@
 .inventory-slot:hover {
   background-color: hsl(50, 20%, 40%);
   transform: scale(1.1);
+  z-index: 10;
+}
+
+.inventory-slot.current {
+  background-color: hsl(50, 20%, 40%);
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+.inventory-slot.current .action-section {
+  display: flex;
+}
+
+.action-section {
+  position: absolute;
+  inset: 0;
+
+  background-color: hsl(90 35% 45% / 30%);
+  backdrop-filter: blur(2px);
+
+  display: none;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.action-section button {
+  padding: 0.5rem 1rem;
+  font-size: medium;
+  font-weight: 600;
+
+  cursor: pointer;
+  border-radius: 5px;
+
+  transition: all 300ms;
+}
+
+.action-section button:hover {
+  transform: translateX(3px);
 }
 
 .item-title {
@@ -139,8 +181,9 @@
 }
 
 #hero-model {
+  border: 1px solid black;
   display: grid;
-  grid-template-columns: min-content 1fr min-content;
+  grid-template-columns: 90px 1fr 90px;
   grid-template-rows: repeat(3, 1fr);
   grid-template-areas:
     "lArm head rArm"
@@ -149,22 +192,38 @@
   ;
 }
 
-#left-arm{
+#hero-model > div {
   display: flex;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: hsl(50 15% 50% / 80%);
+  background-size: 40px;
+  background-blend-mode: luminosity;
+}
+
+#left-arm{
   grid-area: lArm;
+  background-image: url(/img/armorBG/sword.png);
 }
 
 #head {
   grid-area: head;
+  background-image: url(/img/armorBG/helmet.png);
 }
 
 #body {
   grid-area: body;
+  background-image: url(/img/armorBG/armor.png);
+}
+
+#legs {
+  grid-area: legs;
+  background-image: url(/img/armorBG/boots.png);
 }
 
 #right-arm {
-  display: flex;
   grid-area: rArm;
+  background-image: url(/img/armorBG/shield.png);
 }
 
 #right-arm > .inventory-slot,
